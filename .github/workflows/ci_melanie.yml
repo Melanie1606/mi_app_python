@@ -1,0 +1,32 @@
+name: CI/CD Melanie
+
+on:
+  push:
+    branches:
+      - Melanie
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt || echo "Sin dependencias"
+
+      - name: Construir imagen de Melanie
+        run: |
+          echo "Construyendo imagen melanie:1.0.0"
+          docker build -t melanie:1.0.0 .
+
+      - name: Ejecutar contenedor
+        run: |
+          echo "Ejecutando contenedor melanie:1.0.0"
+          docker run --rm melanie:1.0.0
